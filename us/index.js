@@ -6,8 +6,8 @@ document.body.onload = () => {
     {
       let newDiv = document.createElement("div");
       newDiv.className = 'star';
-      newDiv.style.left = ((77.5*i) + 425 )+ 'px';
-      newDiv.style.bottom = (680 - (62.5*j)) + 'px';
+      newDiv.style.left = ((148*i))+ 'px';
+      newDiv.style.bottom = (445 - (113*j)) + 'px';
       let currentDiv = document.getElementById("block");
       document.body.insertBefore(newDiv, currentDiv);
     }
@@ -19,8 +19,8 @@ document.body.onload = () => {
     {
       let newDiv = document.createElement("div");
       newDiv.className = 'star';
-      newDiv.style.left = ((77.5*i) + 386)+ 'px';
-      newDiv.style.bottom = (711 - (62.5*j)) + 'px';
+      newDiv.style.left = ((148*i) - 72.5)+ 'px';
+      newDiv.style.bottom = (498 - (113*j)) + 'px';
       let currentDiv = document.getElementById("block");
       document.body.insertBefore(newDiv, currentDiv);
     }

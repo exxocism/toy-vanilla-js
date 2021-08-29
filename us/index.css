@@ -22,7 +22,7 @@
     bottom: 200px;
     left: 0;
     right: 639px;
-    background-color: blue;
+    background-color: darkblue;
     /* background: repeating-linear-gradient( 90deg, white 0px, white 38.6px, blue 38.6px, blue 77.2px); */
     z-index: 1;
 }
@@ -51,17 +51,14 @@
 	height: 0;
     margin: auto;
     top: 0;
-    bottom: 680px;
-    left: 425px;
-    right: 0;
-	margin-left: .9em;
-	margin-right: .9em;
-	margin-bottom: 1.2em;
+    bottom: 445px;
+    left: 0;
+    right: 1010px;
 	border-right: .3em solid transparent;
 	border-bottom: .7em  solid white;
 	border-left: .3em solid transparent;
   /* Controlls the size of the stars. */
-	font-size: 18px;
+	font-size: 14.5px;
     z-index: 3;
 }
 
