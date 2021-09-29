@@ -1,26 +1,20 @@
-function compressString(str) {
+function test3(num) {
   // TODO: 여기에 코드를 작성합니다.
-  let result = [str[0], ];
-  let prv = { char: str[0], count: 1 };
-  for( let i = 1 ; i < str.length ; i++ )
-  {
-    result.push( str[i] );
-    if( str[i] !== prv.char )
-    {
-      if( prv.count >= 3 )
-      {
-        for( let del = 0 ; del <= prv.count ; del++ ) result.pop();
-        result.push( prv.count, prv.char, str[i] );
-      }
-      console.log('called');
-      prv.char = str[i];
-      prv.count = 1;
-      continue;
-    }
-    prv.count++;
-  }
+  const multiplyEachNumbers = ( arr ) => {
+    const result = arr.reduce( (acc, num_each) => acc *= Number(num_each) );
+    return result;
+  };
 
-  return result.join('');
+  let num_split = [];
+  let result = num;
+  do {
+    num_split = Array.from ( String(result) );
+    result = multiplyEachNumbers( num_split );
+  } while ( result >= 10 )
+
+  return result;
 }
 
-console.log(compressString('wwwggopp'));
+//str = "  a  b c d C b A "s
+const str = 234;
+console.log( test3(str) );
