@@ -4,29 +4,83 @@ function fibonacci(n) {
     if (n == 0) return a;
     if (n == 1) return b;
     return fibo(n - 1, b, a + b);
-  }
+  };
   return fibo(n);
 }
 
 const isSubsetOf = function (base, sample) {
   // TODO: 여기에 코드를 작성합니다.
   const shit = new Set(base);
-  for( let i = 0 ; i < sample.length ; i++ )
-    if( !shit.has(sample[i]) ) return false;
+  for (let i = 0; i < sample.length; i++)
+    if (!shit.has(sample[i])) return false;
   return true;
 };
 
 const bubbleSort = function (arr) {
   // TODO: 여기에 코드를 작성합니다.
   let changed = true;
-  while( changed ) {
+  while (changed) {
     changed = false;
-    for( let i = 0 ; i < arr.length - 1 ; i++ ) {
-      if( arr[i] > arr[i+1] ) {
+    for (let i = 0; i < arr.length - 1; i++) {
+      if (arr[i] > arr[i + 1]) {
         changed = true;
-        [ arr[i], arr[i+1] ] = [ arr[i+1], arr[i] ];
+        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
       }
-    } 
+    }
   }
   return arr;
+};
+
+function queuePrinter(bufferSize, capacities, documents) {
+  // TODO: 여기에 코드를 작성합니다.
+
+  const queue = Array(bufferSize).fill(null);
+  const queueSum = () => {
+    let sum = 0;
+    for (let i = 0; i < bufferSize; i++) {
+      if (queue[i]) sum += queue[i];
+    }
+    return sum;
+  };
+
+  const queueHasValue = () => {
+    for( let i = 0 ; i < bufferSize ; i++ ) if( queue[i] ) return true;
+    return false;
+  };
+
+  const queuelength = () => {
+    let sum = 0;
+    for( let i = 0 ; i < bufferSize ; i++ ) if( queue[i] ) sum++;
+    return sum;
+  };
+
+  let second = 0;
+  while ( documents.length ) {
+    queue.shift();
+    if ( queuelength() < bufferSize 
+          && documents.length
+          && queueSum() + documents[0] <= capacities ) {
+            queue[bufferSize - 1] = documents.shift();
+          }
+    second++;
+    // console.log(`zzsecond: ${second}, queue: ${queue}, documents: ${documents}`);
+  }
+  while( queueHasValue() ) {
+    queue.shift();
+    // console.log(`second: ${second}, queue: ${queue}, documents: ${documents}`);
+    second++;
+  }
+  return second;
+}
+
+let tiling = function (n) {
+  // TODO: 여기에 코드를 작성합니다.
+  const stor = Array(n).fill(null);
+  const ti = ( num ) => {
+    if( num < 3 ) return num;
+    if( stor[num] ) return stor[num];
+    return stor[num] = ( ti(num - 1) + ti(num - 2) );
+  };
+
+  return ti(n);
 };
