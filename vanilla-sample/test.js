@@ -1,3 +1,5 @@
+
+
 function fibonacci(n) {
   // TODO: 여기에 코드를 작성합니다.
   const fibo = (n, a = 0, b = 1) => {
@@ -84,3 +86,37 @@ let tiling = function (n) {
 
   return ti(n);
 };
+
+function countWithVar () {
+
+  //0에서 4까지 for loop을 돌면서
+  let i = 4;
+  // for (let i = 0; i < 5; i++) {
+
+  //   //'1초 뒤 i를 출력하라'는 지시를 내린다.
+  //   setTimeout(function () {
+
+  //     //i를 출력
+  //     console.log(i)
+  //   }, 1000)
+  // }
+  {
+    let i = 1;
+    if( i < 5 ) {
+      setTimeout(function () {
+        //i를 출력
+        console.log(i)
+      }, 1000)
+    }
+  }
+  {
+    let i = 2;
+    if( i < 5 ) {
+      setTimeout(function () {
+        //i를 출력
+        console.log(i)
+      }, 1000)
+    }
+  }
+}
+countWithVar();
