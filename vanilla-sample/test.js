@@ -199,3 +199,28 @@ function devideNumber(num) {
   console.log(result);
 }
 
+function missHouseMeal(sideDishes) {
+  sideDishes.sort();
+  let result = [[]];  // 결과를 담을 배열, [] 반찬을 안먹는 경우도 있기때문에 빈배열을 디폴트로 넣어주었다.
+  
+  for (let i = 0; i < sideDishes.length; i++) {
+    let len = result.length; // ?? 왜 필요한거지..??
+    for (let j = 0; j < len; j++) { // 이렇게 쓰면 에러가 발생합니다.
+      result.push([...result[j], sideDishes[i]]);  
+    }
+  }
+  return result.sort();
+}
+
+//console.log(missHouseMeal( ["eggroll", "kimchi", "fishSoup"] ));
+
+
+function power(base, exponent) {
+  // todo: 여기에 코드를 작성합니다.
+  if( exponent === 1 ) return base;
+  
+  let result = power(base, Math.floor(exponent / 2));
+  result = (result * result) % 94906249;
+  if( exponent % 2 ) result = (result * base) % 94906249;
+  return result;
+}
