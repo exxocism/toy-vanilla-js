@@ -1,3 +1,28 @@
+const largestProductOfThree = function (arr) {
+  // TODO: 여기에 코드를 작성합니다.
+  const getCombinations = (array, selectNumber) => {
+        const results = [];
+        if(selectNumber === 1){
+            return array.map((element) => [element]);
+        }
+        array.forEach((fixed, index, origin) => {
+            const rest = origin.slice(index+1);
+            const combinations = getCombinations(rest, selectNumber - 1);
+            const attached = combinations.map((combination) => [fixed, ...combination]);
+            results.push(...attached);
+        });
+        return results;
+  }
+  const check = getCombinations( arr, 3 );
+  const max = check.reduce( ( max, e, i ) => {
+    const test = e[0] * e[1] * e[2];
+    if( max >= test && i > 0 ) return max;
+    return test;
+  }, 0);
+  return max;
+};
+
+
 
 
 function fibonacci(n) {
@@ -87,40 +112,6 @@ let tiling = function (n) {
   return ti(n);
 };
 
-function countWithVar () {
-
-  //0에서 4까지 for loop을 돌면서
-  let i = 4;
-  // for (let i = 0; i < 5; i++) {
-
-  //   //'1초 뒤 i를 출력하라'는 지시를 내린다.
-  //   setTimeout(function () {
-
-  //     //i를 출력
-  //     console.log(i)
-  //   }, 1000)
-  // }
-  {
-    let i = 1;
-    if( i < 5 ) {
-      setTimeout(function () {
-        //i를 출력
-        console.log(i)
-      }, 1000)
-    }
-  }
-  {
-    let i = 2;
-    if( i < 5 ) {
-      setTimeout(function () {
-        //i를 출력
-        console.log(i)
-      }, 1000)
-    }
-  }
-}
-countWithVar();
-
 
 let dfs = function (node) {
   // TODO: 여기에 코드를 작성합니다.
@@ -145,3 +136,66 @@ Node.prototype.addChild = function (child) {
   this.children.push(child);
   return child;
 };
+
+function devideNumber2(num) {
+  console.log(num);
+  console.log(parseInt(num,10));
+  console.log(parseInt(num,8));
+  console.log(num.toString(10));
+  console.log(num.toString(8));
+  //들어온 숫자가 정상인지 확인한다.
+  let result = num;
+  const str = num.toString();
+  let checksum = 0;
+  for( let i = 0 ; i < str.length - 1 ; i ++ ) {
+    checksum += str[i];
+  }
+  if( str[str.length-1] != checksum % 10 ) {
+    //체크섬 검증 실패 : 8진수를 10진수로 변환
+    console.log('8진수 형태의 입력이 들어온 것 같습니다. 10진수로 변환합니다.');
+    let str_converted = num.toString(8);
+    //console.log(str_converted);
+    //체크섬과 자리수를 떼어낸 뒤에 자릿수를 체크하여 없으면 붙여주기
+    let 자릿수 = str_converted[str_converted.length - 2];
+    str_converted = str_converted.slice(0,str_converted.length - 2);
+    if( str_converted.length !== 자릿수 ) str_converted = '0' + str_converted;
+    result = str_converted;
+  } else {
+    //정상적인 값이 들어왔으므로 뒤의 두 자리를 떼준다.
+    result = Math.floor(num / 100);
+  }
+
+  console.log(result);
+}
+
+function devideNumber(num) {
+
+  console.log( num );
+  console.log( parseInt(num, 10) );
+  console.log( Number.parseInt(num, 8) );
+  console.log( num.toString(10) );
+  console.log( num.toString(8) );
+
+  return ;
+  let result = num.toString(10);
+  let isDecimal = false;
+
+  //8진수인지 여부를 검사
+  for( let i = 0 ; i < result.length ; i++ ) {
+    if( result[i] >= 8 ) {
+      isDecimal = true;
+      break;
+    }
+  }
+
+    
+
+  if( !isDecimal || isNaN(parseInt(num, 8))) {
+    //8진수가 들어온 것으로 가정하고 10진수로 변환
+    console.log('8진수 숫자가 들어온 것 같습니다. 10진수로 변환합니다.')
+    result = num.toString(8);
+  }
+
+  console.log(result);
+}
+

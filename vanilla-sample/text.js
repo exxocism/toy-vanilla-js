@@ -123,6 +123,26 @@ function orderOfPresentation(N, K) {
 
 // output = orderOfPresentation(5, [1, 3, 2, 4, 5])
 // console.log(output); // 6
-
-output = orderOfPresentation(12, [8,3,9,10,1,2,12,11,7,6,5,4]);
-console.log(output); // 289095119
+const largestProductOfThree = function (arr) {
+  // TODO: 여기에 코드를 작성합니다.
+  const getCombinations = (array, selectNumber) => {
+        const results = [];
+        if(selectNumber === 1){
+            return array.map((element) => [element]);
+        }
+        array.forEach((fixed, index, origin) => {
+            const rest = origin.slice(index+1);
+            const combinations = getCombinations(rest, selectNumber - 1);
+            const attached = combinations.map((combination) => [fixed, ...combination]);
+            results.push(...attached);
+        });
+        return results;
+  }
+  const check = getCombinations( arr, 3 );
+  const max = check.reduce( ( max, e, i ) => {
+    const test = e[0] * e[1] * e[2];
+    if( max >= test && i > 0 ) return max;
+    return test;
+  }, 0);
+  return max;
+};
