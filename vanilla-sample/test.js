@@ -1,3 +1,108 @@
+const binarySearch = function (arr, target) {
+  // TODO : 여기에 코드를 작성합니다.
+  const binSearch = ( arr, target, left, right ) => {
+    if (right >= left) {
+        let mid = left + Math.floor((right - left) / 2);
+        if (arr[mid] === target) return mid;
+        if (arr[mid] > target) return binSearch(arr, target, left, mid - 1);
+        return binSearch(arr, target, mid + 1, right);
+    }
+    return -1;
+  };
+
+  return binSearch( arr, target, 0, arr.length - 1 );
+};
+
+
+function connectedVertices(edges) {
+  // TODO: 여기에 코드를 작성합니다.
+  const createMatrix = ( edges ) => {
+    const matrix_size = Math.max(...edges.flat(Infinity)) + 1;
+    const matrix = Array(matrix_size).fill(0).map( e => Array(matrix_size).fill(0) );
+    edges.forEach( edge => {
+      matrix[edge[0]][edge[1]] = 1;
+      matrix[edge[1]][edge[0]] = 1;
+    });
+    return matrix;
+  };
+ 
+  const createAdjacentList = ( matrix ) => {
+    const adjacent_list = [];
+    matrix.forEach((e) => {
+      const list = e.map((check, i) => (check? i : null)).filter((check) => check !== null);
+      const obj = {};
+      list.forEach( idx => {
+          obj[String(idx)] = idx;
+      });
+      obj.visited = false;
+      adjacent_list.push(obj);
+    });
+    return adjacent_list;
+  };
+
+  const isValueInGroups = ( current, check_to_visit ) => {
+    for( let i = 0 ; i < groups.length ; i++ ){
+      if( groups[i].has(current) || check_to_visit.some( node => groups[i].has(node) ) ) {
+        return i;
+      }
+    }
+    return -1;
+  };
+
+  const matrix = createMatrix( edges );
+  const adjacent_list = createAdjacentList( matrix ); 
+
+  const groups = [];
+  for( let i = 0 ; i < adjacent_list.length ; i ++ ) {
+    if( adjacent_list[i].visited ) continue;
+
+    let current = i;
+    while( !adjacent_list[current].visited ) {
+      adjacent_list[current].visited = true;
+      const check_to_visit = Object.values(adjacent_list[current]).filter( e => (typeof e === 'number' && !isNaN(e)) );
+      const addidx = isValueInGroups( current, check_to_visit );
+      if( addidx !== -1 ) {
+        groups[addidx].add(current);
+        check_to_visit.forEach( node => groups[addidx].add(node) );
+      } else {
+        const group_add = new Set();
+        group_add.add(current);
+        check_to_visit.forEach( node => group_add.add(node) );
+        groups.push( group_add );
+      }
+      if ( check_to_visit.length ) current = Math.max( ...check_to_visit );
+    }
+  }
+
+  // console.dir(adjacent_list);
+  // console.dir(groups);
+  return groups.length;
+}
+
+function getDirections(matrix, from, to) {
+  // TODO: 여기에 코드를 작성합니다.
+  const adjacent_list = [];
+  matrix.forEach((e) => {
+    const list = e.map((check, i) => (check ? i : 0)).filter((check) => check !== null);
+    const obj = {};
+    list.forEach( e => {
+        obj[e] = e;
+    });
+    obj.visited = false;
+    adjacent_list.push(obj);
+  });
+
+  let current = from;
+  while( !adjacent_list[current].visited ) {
+      if( Object.keys(adjacent_list[current]).includes(String(to)) ) return true;
+      adjacent_list[current].visited = true;
+      current = Math.max( ...Object.values(adjacent_list[current]).filter( (typeof e === 'number' && !isNaN(e)) ) );
+  }
+  return false;
+}
+
+
+
 const largestProductOfThree = function (arr) {
   // TODO: 여기에 코드를 작성합니다.
   const getCombinations = (array, selectNumber) => {
