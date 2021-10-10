@@ -1,3 +1,26 @@
+let bfs = function (node) {
+  // TODO: 여기에 코드를 작성합니다.
+  const bfs_childonly = ( node, depth ) => {
+    if( depth === 0 ) {
+      return node.value;
+    }
+    if( node.children.length === 0 ) return null;
+    return [ ...node.children.map( child => bfs_childonly( child, depth - 1 ) ).filter( e => e !== null ).flat(1) ];
+  };
+
+  let result = [node.value];
+  let i = 1;
+  let check = bfs_childonly(node, i);
+  while( check !== null && check.length ) {
+    result = result.concat( ...check );
+    i++;
+    check = bfs_childonly(node, i);
+  }
+
+  return result;
+};
+
+
 const powerSet = function (str) {
   // TODO: 여기에 코드를 작성합니다.
   const getCombinations = (array, selectNumber) => {
