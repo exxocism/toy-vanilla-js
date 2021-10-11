@@ -1,3 +1,25 @@
+const insertionSort = function (arr, callback) {
+  // TODO: 여기에 코드를 작성합니다.
+  for( let i = 1 ; i < arr.length ; i++) {
+    let sort_index = i;
+    for( let j = i - 1; j >= 0 ; j-- ) {
+      if( callback ) {
+        if( callback( arr[j] ) > callback( arr[sort_index] ) ) {
+          [arr[j], arr[sort_index]] = [arr[sort_index], arr[j]];
+          sort_index--;
+        }
+      } else {
+        if( arr[j] > arr[sort_index] ) {
+          [arr[j], arr[sort_index]] = [arr[sort_index], arr[j]];
+          sort_index--;
+        }
+      }
+    }
+  }
+  return arr;
+};
+
+
 let bfs = function (node) {
   // TODO: 여기에 코드를 작성합니다.
   const bfs_childonly = ( node, depth ) => {
