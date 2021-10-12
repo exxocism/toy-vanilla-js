@@ -1,3 +1,44 @@
+const rotatedArraySearch = function (rotated, target) {
+  // TODO : 여기에 코드를 작성합니다.
+  const binSearch = ( arr, target, l, r ) => {
+    let left = l;
+    let right = r;
+    while (right >= left) {
+        let mid = left + Math.floor((right - left) / 2);
+        if (arr[mid] === target) return mid;
+        if (arr[mid] > target) {
+          right = mid - 1;
+          continue;
+        }
+        left = mid + 1;
+    }
+    return -1;
+  };
+
+  const findPivot = ( arr, low, high ) => {
+    // base cases
+    if (high < low) return -1;
+    if (high == low) return low;
+ 
+    let mid = Math.floor((low + high) / 2); /*low + (high - low)/2;*/
+    if (mid < high && arr[mid] > arr[mid + 1])
+        return mid;
+    if (mid > low && arr[mid] < arr[mid - 1])
+        return (mid - 1);
+    if (arr[low] >= arr[mid])
+        return findPivot(arr, low, mid - 1);
+ 
+    return findPivot(arr, mid + 1, high);
+  }
+  
+  const pivot = findPivot( rotated, 0, rotated.length - 1 );
+  if (pivot == -1) return binSearch( rotated, target, 0, rotated.length - 1 );
+  if (rotated[pivot] == target) return pivot;
+  if (rotated[0] <= target) return binSearch(rotated, target, 0, pivot - 1);
+  return binSearch(rotated, target, pivot + 1, rotated.length - 1);
+};
+
+
 function quickSort(array) {
   // Only change code below this line\
   if( array.length === 0 ) return [];
