@@ -1,3 +1,25 @@
+function quickSort(array) {
+  // Only change code below this line\
+  if( array.length === 0 ) return [];
+  if( array.length === 1 ) return array;
+  //devide and conquer
+
+  const pivot = array.shift();
+  const leftArray = [];
+  const center = [];
+  const rightArray = [];
+  for( let i = 0 ; i < array.length ; i ++ ){
+    if( array[i] < pivot ) leftArray.push( array[i] );
+    else if( array[i] > pivot ) rightArray.push( array[i] );
+    else center.push( array[i] );
+  }
+  center.push( pivot );
+  return [...quickSort(leftArray) ,...center, ...quickSort(rightArray)] ;
+  // Only change code above this line
+}
+
+console.log(quickSort([1,4,2,8,345,123,43,32,5643,63,123,43,2,55,1,234,92]));
+
 const insertionSort = function (arr, callback) {
   // TODO: 여기에 코드를 작성합니다.
   for( let i = 1 ; i < arr.length ; i++) {

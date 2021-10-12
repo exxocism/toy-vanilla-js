@@ -1,35 +1,82 @@
-/**
- * @param {number[]} nums
- * @param {number} target
- * @return {number}
- */
- var threeSumClosest = function(nums, target) {
-    
-  if( nums.length === 3 ) {
-      return nums[0]+nums[1]+nums[2];
+function barcode(len) {
+  // TODO: 여기에 코드를 작성하세요.
+  const barcode_info = Array(len).fill(null);
+
+  for( let i = 0; i < len; i++ ) {
+    const shit = {
+      num: undefined,
+      tried: []
+    };
+    barcode_info[i] = shit;
   }
 
-  //nums = nums.sort( (a, b) => a - b );
-    
-  let check = nums.shift();
-  let least_difference = Math.abs((nums[0]+nums[1]+nums[2]) - target);
-  let diff_offset = 0;
-  while( nums.length > 1 ) {
-    diff_offset = check - target;
-    for( let i = 0 ; i < nums.length - 1 ; i++ ) {
-      let minimum_idx = i + 1;
-      for( let j = i + 1 ; j < nums.length ; j++ ) {
-          const difference = Math.abs((nums[i] + nums[j]) + diff_offset);
-          if( difference < least_difference ) {
-            console.log(`1:${check} 2:${nums[i]} 3:${nums[j]} sum:${check+nums[i]+nums[j]} difference:${difference} `);
-            least_difference = difference;  
-          } 
-      }
+  const BARCODE_SHOULD_FALL_BACK = -1;
+
+  const getNextBarcode = (idx) => {
+    for (let i = 1; i <= 3; i++) {
+      if (
+        !barcode_info[idx].hasOwnProperty('tried') ||
+        !barcode_info[idx].tried.includes(i)
+      )
+        return i;
     }
-    check = nums.shift();
-  }
-    
-  return least_difference;
-};
+    return BARCODE_SHOULD_FALL_BACK;
+  };
 
-console.log(threeSumClosest([-1,2,1,-4], 1));
+  const getLastGoodBarcode = (idx) => {
+    for (let i = idx; i >= 0; i--) {
+      if (barcode_info[i].tried.length < 3) return i;
+    }
+  };
+
+  const resetBarcodesAndTriedRecords = (idx) => {
+    for (let i = idx; i < barcode_info.length; i++) {
+      // if (barcode_info[i].hasOwnProperty("num")) delete barcode_info[i].num;
+      if (barcode_info[i].hasOwnProperty("num")) barcode_info[i].num = undefined;
+      if (barcode_info[i].hasOwnProperty("tried")) barcode_info[i].tried = [];
+    }
+  };
+
+  const getBarcodeString = () => {
+    let result = "";
+    barcode_info.some((e) => {
+      if (!e.hasOwnProperty("num") || !e.num ) return true;
+      result += e.num;
+    });
+    return result;
+  };
+
+  const STRING_IS_VALID = -1;
+  const hasStringDuplicatedNumber = (str) => {
+    //const magicExp = /([0-9]+)\1/g;
+    const magicExp = /([0-9]+)(?=\1)/g;
+    const matchStr = str.match(magicExp);
+    if (matchStr !== null ) {
+      return str.lastIndexOf(matchStr);
+    }
+    return STRING_IS_VALID;
+  };
+
+  let i = 0;
+  while (i >= 0 && i < len) {
+    const barcodeSearched = getNextBarcode(i);
+
+    if (barcodeSearched === BARCODE_SHOULD_FALL_BACK) {
+      i = getLastGoodBarcode(i);
+      resetBarcodesAndTriedRecords(i + 1);
+      continue;
+    }
+
+    barcode_info[i].num = barcodeSearched;
+    barcode_info[i].tried.push(barcodeSearched);
+
+    const duplicatedSearch = hasStringDuplicatedNumber(getBarcodeString());
+    if (duplicatedSearch !== STRING_IS_VALID) {
+      i = getLastGoodBarcode(i);
+      resetBarcodesAndTriedRecords(i + 1);
+      continue;
+    }
+    i++;
+  }
+  return getBarcodeString();
+}
