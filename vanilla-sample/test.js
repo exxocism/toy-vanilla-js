@@ -1,3 +1,29 @@
+function mergeSort(array) {
+  // Only change code below this line
+  const merge = ( arr1, arr2 ) => {
+    const newArray = [];
+    while( arr1.length && arr2.length ) {
+      if( arr1[0] < arr2[0] ) {
+        newArray.push( arr1.shift() );
+      } else {
+        newArray.push( arr2.shift() );
+      }
+    }
+    if( arr1.length ) newArray.push( ...arr1 );
+    if( arr2.length ) newArray.push( ...arr2 );
+    return newArray;
+  };
+
+  const mSort = ( array ) => {
+    if( array.length === 1 ) return array;
+    return merge( mSort( array.slice(0, array.length / 2) ), mSort( array.slice( array.length / 2, array.length ) ) );
+  };
+
+  return mSort(array);
+  // Only change code above this line
+}
+
+
 const quickSort_codestates = function (arr, cb) {
   // TODO: 여기에 코드를 작성합니다.
   if( arr.length === 0 ) return [];
