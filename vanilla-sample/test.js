@@ -1,3 +1,32 @@
+const quickSort_codestates = function (arr, cb) {
+  // TODO: 여기에 코드를 작성합니다.
+  if( arr.length === 0 ) return [];
+  if( arr.length === 1 ) return arr;
+  //devide and conquer
+
+  const pivot = arr.shift();
+  const pivot_comparison = cb? cb(pivot):pivot;
+  const leftArray = [];
+  const center = [];
+  const rightArray = [];
+  for( let i = 0 ; i < arr.length ; i ++ ){
+    if( cb ) {
+
+      if( cb(arr[i]) < pivot_comparison ) leftArray.push( arr[i] );
+      else if( cb(arr[i]) > pivot_comparison ) rightArray.push( arr[i] );
+      else center.push( arr[i] );
+
+    } else {
+      if( arr[i] < pivot ) leftArray.push( arr[i] );
+      else if( arr[i] > pivot ) rightArray.push( arr[i] );
+      else center.push( arr[i] );
+    }    
+  }
+  center.push( pivot );
+  return [...quickSort(leftArray) ,...center, ...quickSort(rightArray)] ;
+};
+
+
 const rotatedArraySearch = function (rotated, target) {
   // TODO : 여기에 코드를 작성합니다.
   const binSearch = ( arr, target, l, r ) => {
