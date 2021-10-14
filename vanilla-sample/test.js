@@ -1,3 +1,44 @@
+const balancedBrackets = function (str) {
+  // TODO: 여기에 코드를 작성합니다.
+  const braces_info = [
+    { start:'(', end:')', idx:[] },
+    { start:'[', end:']', idx:[] },
+    { start:'{', end:'}', idx:[] }
+  ];
+  
+  let returnfalse = false;
+  for( let i = 0 ; i < str.length ; i ++ ) {
+    braces_info.forEach( brace => {
+      if( str[i] === brace.start ) {
+        brace.idx.push(i);
+      }
+      if( str[i] === brace.end ) {
+        const lastidx = brace.idx.pop(i);
+        if( lastidx === undefined ) {
+          returnfalse = true;
+          return ;
+        } 
+        const check = braces_info.every( br_comp => {
+          if( br_comp.start === brace.start || !br_comp.idx.length ) return true;
+          if( br_comp.idx[br_comp.idx.length - 1] > lastidx ) return false;
+          return true;
+        });
+        if( !check ) {
+          returnfalse = true;
+          return ;
+        }
+      }
+    })
+  }
+  if( returnfalse ) return false;
+
+  return braces_info.every( brace => {
+    if( brace.idx.length ) return false;
+    return true;
+  });
+};
+
+
 function mergeSort(array) {
   // Only change code below this line
   const merge = ( arr1, arr2 ) => {

@@ -94,8 +94,8 @@ const primePassword = (curPwd, newPwd) => {
   return -1;
 };
 
-let output = primePassword(1009, 1171);
-console.log(output); // --> 5
+// let output = primePassword(1009, 1171);
+// console.log(output); // --> 5
 // expected Array [ 2441, 9199 ] to equal 8
 // expected Array [ 4391, 6983 ] to equal 8
 // expected Array [ 7867, 9241 ] to equal 6
@@ -104,4 +104,3 @@ console.log(output); // --> 5
 // expected Array [ 9787, 9923 ] to equal 6
 // expected Array [ 1009, 1171 ] to equal 5
 // expected Array [ 3733, 8779 ] to equal 3
-
