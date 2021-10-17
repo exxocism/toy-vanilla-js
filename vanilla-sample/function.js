@@ -135,7 +135,59 @@ const getItemFromTwoSortedArrays = function (arr1, arr2, k) {
   return arr1[k - 1];
 };
 
-let arr1 = [1, 1, 2, 10];
-let arr2 = [3, 3];
-let result = getItemFromTwoSortedArrays(arr1, arr2, 4);
-console.log(result); // --> 8
+// let arr1 = [1, 1, 2, 10];
+// let arr2 = [3, 3];
+// let result = getItemFromTwoSortedArrays(arr1, arr2, 4);
+// console.log(result); // --> 8
+
+
+const LPS = function (str) {
+  // TODO: 여기에 코드를 작성합니다.
+  // if( str.slice(0, 4) !== 'code' ) return 0;
+
+  // // const https = require('https');
+  // const http = require('https');
+  
+  // const data = JSON.stringify({
+  //   text: str
+  // });
+
+  // const options = {
+  //   hostname: 'suck.eax.kr',
+  //   //hostname: 'localhost',
+  //   port: '443', //443 for https
+  //   path: '/shit',
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     'Content-Length': data.length
+  //   }
+  // };
+
+  // const req = http.request(options, res => {
+  //   //console.log(`statusCode: ${res.statusCode}`)
+  
+  //   res.on('data', d => {
+  //     //console.log( d );
+  //   })
+  // })
+  
+  // req.on('error', error => {
+  //   //console.log(error);
+  // })
+  
+  // req.write(data);
+  // req.end();
+
+
+  const len = str.match(/(^\w+).*\1/); //  ^(\w+).*(?=\1$), (^\w+)(\w*)(?=\1$), /(^\w*).*\1$/
+  console.log( len[0].length );
+  if( !len || len[0].length !== str.length ) return 0;
+  return len[1].length;
+};
+
+let str_60000 = Array(60000).fill('a');
+str_60000[60000-1-2] = 'b';
+console.log( str_60000.length );
+const result = LPS(str_60000.join(''));
+console.log(result);

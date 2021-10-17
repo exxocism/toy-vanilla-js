@@ -1,3 +1,43 @@
+const LPS = function (str) {
+  // TODO: 여기에 코드를 작성합니다.
+  let left = 0;
+  let right = Math.ceil(str.length / 2);
+  const len = str.length;
+  while( right < len ) {
+    if( str[left] !== str[right] ) { 
+      left = 0;
+      if( str[left] !== str[right] ) {
+        right++;
+        continue;
+      }      
+    }
+    left++;
+    right++;
+  }
+  return left;
+  // const len = str.match(/(\w*).*\1/); //  ^(\w+).*(?=\1$), (^\w+)(\w*)(?=\1$), /(^\w*).*\1$/
+  // if( !len || len[0].length !== str.length ) {
+      // let left = 0;
+      // let right = Math.ceil(str.length / 2);
+      // const len = str.length;
+      // while( right < len ) {
+      //   if( str[left] !== str[right] ) { 
+      //     left = 0;
+      //     if( str[left] !== str[right] ) {
+      //       right++;
+      //       continue;
+      //     }      
+      //   }
+      //   left++;
+      //   right++;
+      // }
+      // return left;
+  // }
+  // return len[1].length;
+};
+
+
+
 const balancedBrackets = function (str) {
   // TODO: 여기에 코드를 작성합니다.
   const braces_info = [
