@@ -1,3 +1,28 @@
+const rotateMatrix = function (matrix, k) {
+  // TODO: 여기에 코드를 작성합니다.
+  const rotateOnce = ( matrix ) => {
+    const row_before = matrix.length;
+    const column_before = matrix[0].length;
+    const [row, column] = [column_before, row_before];
+    const newMatrix = [];
+    for( let i = 0 ; i < row ; i ++ ) {
+      const push_column = [];
+      for( let j = column - 1; j >= 0 ; j --) {
+        push_column.push( matrix[j][i] );
+      }
+      newMatrix.push( push_column );
+    }
+    return newMatrix;
+  };
+  if( !matrix?.length ) return [];
+  let newMatrix = matrix;
+  if( !k ) k = 1;
+  for( let i = 0 ; i < k ; i++ ) {
+    newMatrix = rotateOnce( newMatrix );
+  }
+  return newMatrix;
+};
+
 const inequalityNumber = function (signs) {
   // TODO: 여기에 코드를 작성합니다.
   const number_info = [];
