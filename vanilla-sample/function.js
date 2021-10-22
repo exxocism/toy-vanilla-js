@@ -1,3 +1,24 @@
+function radixSort(arr) {
+  // todo: 여기에 코드를 작성합니다.
+  const radixPart = (arr, part) => {
+    const queue = Array(9).fill(null).map( e => [] );
+    for( let i = 0 ; i < arr.length ; i++ ) {
+      const idx = Array.from(String(arr[i])).reverse()[part] || 0;
+      queue[ idx ].push( arr[i] ) ;
+    }
+    return queue.filter( e => (e) ).flat(1);
+  };
+
+  const max_radix = Array.from(String(Math.max( ...arr ))).reverse().length;
+  for( let i = 0 ; i < max_radix ; i++ ) {
+    arr = radixPart( arr, i );
+  }
+  return arr;
+}
+
+console.log(radixSort([-20, -10, 10]));
+
+
 const spiralTraversal = function (matrix) {
   // TODO: 여기에 코드를 작성합니다.
   // matrix 크기의 visited matrix를 만든다.
@@ -80,5 +101,5 @@ matrix = [
   ['n', 'r', 'e', 'n'],
   ['n', 'a', 'L', ' '],
 ];
-output = spiralTraversal(matrix);
-console.log(output); // --> 'Tyrion Lannister'
+//output = spiralTraversal(matrix);
+//console.log(output); // --> 'Tyrion Lannister'
