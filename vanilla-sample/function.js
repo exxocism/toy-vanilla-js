@@ -1,22 +1,26 @@
 function radixSort(arr) {
   // todo: 여기에 코드를 작성합니다.
   const radixPart = (arr, part) => {
-    const queue = Array(9).fill(null).map( e => [] );
+    const queue = Array(10).fill(null).map( e => [] );
+    const queue_for_minus = Array(10).fill(null).map( e => [] );
     for( let i = 0 ; i < arr.length ; i++ ) {
-      const idx = Array.from(String(arr[i])).reverse()[part] || 0;
-      queue[ idx ].push( arr[i] ) ;
+      const idx = Number(Array.from(String(arr[i])).reverse()[part]) || 0;
+      if( arr[i] >= 0 ) queue[ idx ].push( arr[i] );
+      else queue_for_minus[ idx ].push( arr[i] );
     }
-    return queue.filter( e => (e) ).flat(1);
+    return [...queue_for_minus.reverse().filter( e => (e) ).flat(1), ...queue.filter( e => (e) ).flat(1)];
   };
 
-  const max_radix = Array.from(String(Math.max( ...arr ))).reverse().length;
+  const maxval = Math.max( ...arr ).toString().length;
+  const minval = Math.min( ...arr ).toString().length;
+  const max_radix = Math.max( maxval, minval );
   for( let i = 0 ; i < max_radix ; i++ ) {
     arr = radixPart( arr, i );
   }
   return arr;
 }
 
-console.log(radixSort([-20, -10, 10]));
+console.log(radixSort([20, -10, -11, 2, 29]));
 
 
 const spiralTraversal = function (matrix) {
