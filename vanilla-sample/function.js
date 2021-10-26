@@ -41,4 +41,85 @@
   nums.shift();
 };
 
-console.log(nextPermutation([1,3,2]));
+
+
+const createMatrix = (village) => {
+  const matrix = [];
+  village.forEach((line) => {
+    const row = [];
+    for (let i = 0; i < line.length; i++) row.push(Number(line[i]));
+    matrix.push(row);
+  });
+  return matrix;
+};
+
+const gossipProtocol = function (village, row, col) {
+  // TODO: 여기에 코드를 작성합니다.
+  const MAX_ROW = village.length - 1;
+  const MAX_COL = village[0].length - 1;
+
+  const villageMatrix = createMatrix( village );
+  const isInfected = Array(MAX_ROW+1).fill(null).map(e => Array(MAX_COL+1).fill(0));
+
+  const isWall = ( row, col ) => {
+    if( row < 0 || row > MAX_ROW ) return true;
+    if( col < 0 || col > MAX_COL ) return true;
+    return villageMatrix[row][col] === 0;
+  };
+  
+  const propergate = ( matrix, row, col ) => {        
+    const coordinfo = {
+      left: [row, col-1],
+      right: [row, col+1],
+      up: [row - 1, col],
+      down: [row + 1, col]
+    };
+
+    Object.values(coordinfo).forEach( ([r,c]) => {
+      if( isWall( r, c ) ) return ;
+      matrix[r][c] = 1;
+    });
+  };
+
+  const countMatrix = ( matrix ) => {
+    let count = 0;
+    for( let i = 0 ; i <= MAX_ROW ; i++ ) {
+      for( let j = 0 ; j <= MAX_COL ; j++ ) {
+        if( matrix[i][j] === 1 ) count++;
+      }
+    }
+    return count;
+  };
+
+  isInfected[row][col] = 1;
+  const maxcount = countMatrix( villageMatrix );
+  let second = 0;
+  while( true ) {
+    const infectFrom = new Set();
+    for( let i = 0 ; i <= MAX_ROW ; i++ ) {
+      for( let j = 0 ; j <= MAX_COL ; j++ ) {
+        if( isInfected[i][j] === 1 ) infectFrom.add( [i,j] );
+      }
+    }
+    //console.dir( isInfected );
+    if( infectFrom.size === maxcount ) break; 
+    
+    infectFrom.forEach( ([row, col]) => {
+      propergate( isInfected, row, col );
+    });
+    second++;
+  }
+  return second;  
+};
+
+
+let village = [
+  '0101', // 첫 번째 줄
+  '0111',
+  '0110',
+  '0100',
+];
+let row = 1;
+let col = 2;
+let output = gossipProtocol(village, row, col);
+console.log(output);
