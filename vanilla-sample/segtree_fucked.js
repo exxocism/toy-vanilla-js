@@ -1,6 +1,60 @@
 const rangeMinimum = function (arr, ranges) {
   // TODO: 여기에 코드를 작성합니다.
 
+  const x = parseInt( Math.ceil( Math.log( arr.length ) / Math.log( 2 ) ) );
+  const seg_size = 2 * parseInt( Math.pow(2, x) - 1 );
+  const segtree = Array(seg_size).fill( Infinity );
+
+  const getMin = ( x, y ) => (x < y)? x : y;
+
+  const fillSegTree = ( arr, node = 0, start = 0 , end = arr.length - 1 ) => {
+  
+    if( start === end ) {
+      segtree[node] = arr[start];
+      return arr[start];
+    };
+
+    const mid = Math.floor( start + (end - start) / 2 );
+    const node_left = node * 2 + 1;
+    const node_right = node_left + 1;
+    
+    segtree[node] = getMin( 
+      fillSegTree( arr, node_left, start, mid ),
+      fillSegTree( arr, node_right, mid+1, end )
+    );
+    return segtree[node];
+  };
+
+  const lookupSegTree = ( start, end, node = 0, idx_start = 0 , idx_end = arr.length - 1 ) => {
+    if( start <= idx_start && idx_end  <= end ) return segtree[node];
+    if( start > idx_end || end < idx_start ) return Infinity;
+
+    const idx_mid = Math.floor( idx_start + ( idx_end - idx_start ) / 2 );
+    const node_left = node * 2 + 1;
+    const node_right = node_left + 1;
+
+    return getMin(
+      lookupSegTree( start, end, node_left, idx_start, idx_mid ),
+      lookupSegTree( start, end, node_right, idx_mid + 1, idx_end )
+    );
+  };
+  
+  const getParentNode = (idx) => {
+    // TODO: 여기에 코드를 작성합니다.    
+    if( idx < 3 ) return 0;
+    return Math.floor((idx - 1) / 2);
+  };
+
+  const result = [];
+  fillSegTree( arr );
+  console.log( segtree );
+  ranges.forEach( ([start, end]) => {
+    result.push( lookupSegTree( start, end ) );
+  });
+  return result;
+}
+
+const rangeMinimum_class = function (arr, ranges) {
   class segmentTree {
     constructor( arr, start, end ) {
       this.node = {
@@ -31,7 +85,7 @@ const rangeMinimum = function (arr, ranges) {
       this.node.right = new segmentTree( arr.slice(mid), idx_mid + 1, idx_end );
     }
 
-    minimum( left, right ) {
+   minimum( left, right ) {
       // 범위 밖에 있는 경우
       if(left > this.node.end || right < this.node.start) return NaN;
       // 범위 안에 있는 경우
@@ -45,7 +99,7 @@ const rangeMinimum = function (arr, ranges) {
     }
   }
 
-  const segtree = new segmentTree( arr, 0, arr.length - 1 );
+  //const segtree = new segmentTree( arr, 0, arr.length - 1 );
   const result = [];
   ranges.forEach( ([start, end]) => {
     result.push( segtree.minimum( start, end ) );
