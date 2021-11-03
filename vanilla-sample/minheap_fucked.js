@@ -26,34 +26,25 @@ function insert(heap, item) {
 
 function removeRoot(heap) {
   // TODO: 여기에 코드를 작성합니다.
-  const sortIter_reverse = ( idx ) => {
-    const lchild_idx = getLeftChild( idx );
-    const rchild_idx = getRightChild( idx );
-    let comp_idx;
-    if( lchild_idx >= heap.length ) {
-      heap.splice( idx, 1 );
-      return ;
-    }
-    if( rchild_idx >= heap.length ) comp_idx = lchild_idx;
-    else {
-      comp_idx = (heap[lchild_idx] < heap[rchild_idx])? lchild_idx:rchild_idx;
-    }
-    if( heap[comp_idx] < heap[idx] ) {
-      swap( comp_idx, idx, heap );
-      sortIter_reverse( comp_idx );
-    }
-  };
+  if ( !heap?.length ) return 0;
+  const front = heap[1];
+  swap(1, heap.length, heap);
+  heap[heap.length] =  pow(2,31); 
 
-  const getLeftChild = ( idx ) => {
-    return 2 * idx + 1;
-  };
-
-  const getRightChild = ( idx ) => {
-    return 2 * idx + 2;
-  };
-
-  heap[0] = Infinity;
-  sortIter_reverse( 0 );
+  for (let i = 1; i * 2 <= heap.length - 1;)
+  {
+    if (heap[i] < heap[i * 2] && heap[i] < heap[i * 2 + 1]) break;
+    else if (heap[i * 2] > heap[i * 2 + 1])
+    {
+      swap(i, i * 2 + 1, heap);
+      i = i * 2 + 1;
+    }
+    else
+    {
+      swap(i, i * 2, heap);
+      i = i * 2;
+    }
+  }
   return heap;
 }
 
@@ -65,59 +56,39 @@ const binaryHeap = function (arr) {
 };
 
 const heapSort = function (arr) {
-  let minHeap = binaryHeap(arr);
-  // TODO: 여기에 코드를 작성합니다.
-  const sortIter = ( idx ) => {
-    if( idx < 2 ) return ;
 
-    const parent_idx = getParentIdx( idx );
-    const lchild_idx = getLeftChild( parent_idx );
-    const rchild_idx = getRightChild( parent_idx );
-    let comp_idx = lchild_idx; 
-    if( rchild_idx < minHeap.length ) {
-      comp_idx = (minHeap[lchild_idx] < minHeap[rchild_idx])? lchild_idx:rchild_idx;
-    }
-    if( minHeap[parent_idx] > minHeap[comp_idx] ) {
-      swap( comp_idx, parent_idx, minHeap );
-      sortIter_reverse( comp_idx );      
-      sortIter( parent_idx );
-    }
-  };
+  const heap = binaryHeap( arr );
+  const n = arr.length;
 
-  const sortIter_reverse = ( idx ) => {
-    const lchild_idx = getLeftChild( idx );
-    const rchild_idx = getRightChild( idx );
-    let comp_idx;
-    if( lchild_idx >= minHeap.length ) return ;
-    if( rchild_idx >= minHeap.length ) comp_idx = lchild_idx;
-    else {
-      comp_idx = (minHeap[lchild_idx] < minHeap[rchild_idx])? lchild_idx:rchild_idx;
-    }
-    if( minHeap[comp_idx] < minHeap[idx] ) {
-      swap( comp_idx, idx, minHeap );
-      sortIter_reverse( comp_idx );
+  const heapify = (n, i) => {
+    let smallest = i; // Initialize largest as root
+    const l = 2 * i + 1; // left = 2*i + 1
+    const r = 2 * i + 2; // right = 2*i + 2
+
+    // If left child is larger than root
+    if (l < n && heap[l] < heap[smallest]) smallest = l;
+    // If right child is larger than largest so far
+    if (r < n && heap[r] < heap[smallest]) smallest = r;
+
+    // If largest is not root
+    if (smallest !== i) {
+      swap( i, smallest, heap );
+      // Recursively heapify the affected sub-tree
+      heapify( n, smallest );
     }
   };
 
-  const getLeftChild = ( idx ) => {
-    return 2 * idx + 1;
-  };
+  // Build heap (rearrange array)
+  for (var i = Math.floor(n / 2) - 1; i >= 0; i--) heapify(n, i);
 
-  const getRightChild = ( idx ) => {
-    return 2 * idx + 2;
-  };
-
-  for( let i = Math.floor(minHeap.length / 2) - 1; i >= 0 ; i-- ) {
-    sortIter( i );
+  // One by one extract an element from heap
+  for (var i = n - 1; i > 0; i--) {
+    swap( i, 0, heap );
+    // call max heapify on the reduced heap
+    heapify(i, 0);
   }
-  
-  for( let i = minHeap.length - 1 ; i > 0 ; i-- ) { 
-    const root = minHeap[0];
-    removeRoot( minHeap );
-    insert( minHeap, root );
-    //sortIter( minHeap.length - 1 );
-  }
-  return minHeap;
+  return heap.reverse();
 }
 
-console.log( heapSort([5,4,3,2,1]) );
+//console.log( heapSort([5,4,3,2,1]) );
+console.log( heapSort([3,1,21]) );
