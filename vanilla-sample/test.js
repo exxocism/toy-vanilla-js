@@ -1,3 +1,54 @@
+const closestPairOfPoints = function (points) {
+  // TODO: 여기에 코드를 작성합니다.
+  const closestPair = {
+    distance: Infinity,
+    points: []
+  };
+  for (let i = 0; i < points.length; i++) {
+      for (let j = i + 1; j < points.length; j++) {
+          const distance = calculateDistance(points[i], points[j]);
+          if (distance < closestPair.distance) {
+              closestPair.distance = distance;
+              closestPair.points = [points[i], points[j]];
+          }
+      }
+  }
+  return Math.round(calculateDistance( closestPair.points[0], closestPair.points[1] ) * 100);
+};
+
+const uglyNumbers = function (n) {
+  // TODO: 여기에 코드를 작성합니다.
+  const ugly = [1];
+  let i2 = 0, i3 = 0, i5 = 0;
+  for (let i = 1; i < n; i++) {
+      let m2 = ugly[i2] * 2, m3 = ugly[i3] * 3, m5 = ugly[i5] * 5;
+      const min = Math.min(m2, m3, m5);
+      if (min == m2) i2++;
+      if (min == m3) i3++;
+      if (min == m5) i5++;
+      ugly.push(min);
+  }
+  return ugly[n - 1];
+};
+
+
+const LIS = function (arr) {
+  let n = arr.length;
+  let dp = new Array(n);
+  let max = 0;
+  for (let i = 0; i < n; i++) {
+    dp[i] = 1;
+    for (let j = 0; j < i; j++) {
+      if (arr[i] > arr[j] && dp[i] < dp[j] + 1) {
+        dp[i] = dp[j] + 1;
+      }
+    }
+    if (max < dp[i]) max = dp[i];
+  }
+  return max;
+};
+
+
 const LCS = function (str1, str2) {
   const m = str1.length;
   const n = str2.length;
