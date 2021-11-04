@@ -1,3 +1,23 @@
+let longestPalindrome = function (str) {
+  // TODO: 여기에 코드를 작성합니다.
+  const getPalindrome = (s, left, right) => {
+    while (left >= 0 && right < s.length && s[left] === s[right]) {
+      left--;
+      right++;
+    }
+    return s.slice(left + 1, right);
+  }
+
+  let longest = '';
+  for (let i = 0; i < str.length; i++) {
+    let odd = getPalindrome(str, i, i);
+    let even = getPalindrome(str, i, i + 1);
+    let longestPalindrome = odd.length > even.length ? odd : even;
+    longest = longestPalindrome.length > longest.length ? longestPalindrome : longest;
+  }
+  return longest.length;
+};
+
 const closestPairOfPoints = function (points) {
   // TODO: 여기에 코드를 작성합니다.
   const closestPair = {
