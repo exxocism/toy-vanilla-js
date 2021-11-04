@@ -1,3 +1,22 @@
+const LCS = function (str1, str2) {
+  const m = str1.length;
+  const n = str2.length;
+  let result = new Array(m + 1);
+  for (let i = 0; i <= m; i++) result[i] = new Array(n + 1);
+  for (let i = 0; i <= m; i++) result[i][0] = 0;
+  for (let j = 0; j <= n; j++) result[0][j] = 0;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (str1.charAt(i - 1) == str2.charAt(j - 1)) {
+        result[i][j] = result[i - 1][j - 1] + 1;
+      } else {
+        result[i][j] = Math.max(result[i - 1][j], result[i][j - 1]);
+      }
+    }
+  }
+  return result[m][n];
+};
+
 const largestRectangularArea = function (histogram) {
   // TODO: 여기에 코드를 작성합니다.
   const getMaxArea = ( hist, n ) => {
