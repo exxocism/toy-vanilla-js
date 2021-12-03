@@ -1,3 +1,113 @@
+function test3(N, M) {
+
+  let result = [];
+  let combinations = [];
+
+  const combinationUtil = (arr,data,start,end,index,r) => {
+    if(index == r) {
+      const temp = [];
+      for (let j=0; j<r; j++) temp.push( data[j] );
+      combinations.push(temp);
+    }
+      
+    for(let i=start; i<=end && end-i+1 >= r-index; i++){
+      data[index] = arr[i];
+      combinationUtil(arr, data, i+1, end, index+1, r);
+    }
+  }
+
+  const nextPermutation = (nums) => {
+
+    let idx1 = 0;
+    let idx2 = 0;
+    let N = nums.length;
+    nums.unshift('');    
+    for (let i = 1; i <= N; i++) {
+      if (nums[i] < nums[i + 1]) {
+        idx1 = i;
+      }
+    }
+
+    if (!idx1) return false;
+
+    for (let i = N; i >= 1; i--) {
+      if (nums[idx1] < nums[i]) {
+        idx2 = i;
+        break;
+      }
+    }
+
+    [nums[idx1], nums[idx2]] = [nums[idx2],nums[idx1]];
+
+    let tempArr = Array(N + 1).fill("");
+    for (let i = idx1 + 1; i <= N; i++) {
+      tempArr[i] = nums[i];
+    }
+    for (let i = N; i >= idx1 + 1; i--) {
+      nums[i] = tempArr[N - i + idx1 + 1];
+    }
+    nums.shift();
+    return true;
+  }
+
+  const arr = [];
+  for (let i=1; i<=N; i++) arr.push(i);
+  let data = new Array(M);
+  combinationUtil(arr, data, 0, arr.length-1, 0, M);
+
+  combinations.forEach(combination => {
+    result.push(Number(combination.join('')));
+    while( nextPermutation(combination) ) {
+      result.push(Number(combination.join('')));
+    }
+  });
+
+  return result;
+}
+
+function test2(N, M) {
+  
+  const arr = Array.from({length: N}, (v, i) => i+1);
+  const tmp = Array(M);
+  const check = Array(arr.length).fill(false);
+  const result = [];
+
+  function dfs(L) {
+    if(L === M) {
+      const num = Number([...tmp].join(''));
+      result.push(num)
+    }else{
+      for (let i = 0; i < arr.length; i++) {
+        if (check[i] === false) {
+          check[i] = true;
+          tmp[L] = arr[i];
+          dfs(L + 1);
+          check[i] = false;
+        }
+      }
+    }
+  }
+  dfs(0);
+  return result;
+}
+
+
+console.log(test2(10, 10));
+
+const coinChange = function (total, coins) {
+  const dp = Array(total + 1).fill(0);
+  dp[0] = 1;
+
+  for (let i = 0; i < coins.length; i++) {
+    for (let j = coins[i]; j <= total; j++) {
+      dp[j] += dp[j - coins[i]];
+    }
+  }
+
+  return dp[total];
+};
+
+
 let longestPalindrome = function (str) {
   // TODO: 여기에 코드를 작성합니다.
   const getPalindrome = (s, left, right) => {
