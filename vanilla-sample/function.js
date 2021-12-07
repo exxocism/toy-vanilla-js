@@ -1,106 +1,42 @@
-const createMatrix = (village) => {
-  const matrix = [];
-  village.forEach((line) => {
-    const row = [];
-    for (let i = 0; i < line.length; i++) row.push(line[i]);
-    matrix.push(row);
-  });
-  return matrix;
-};
+function missHouseMeal(sideDishes) {
+  // TODO: 여기에 코드를 작성합니다.
+  const result = [];
 
-const gossipProtocol2 = function (village, num) {
+  const dfs = (selected, depthCurrent, depthRequired, currentIndex) => {
+    if ( depthCurrent === depthRequired ) {
+      //sort the array in lexical order 
+      const selectedCopy = [...selected];
+      selectedCopy.sort();
+      return result.push( [...selectedCopy] );
+    }
 
-  const knowAll = ( ) => {
-    return village.every((line, y) => {
-      if( line.includes('1') ) return false;
-      return true;
-    });
-  }
-  if( knowAll() ) return 0;
-
-  const matrix = createMatrix(village);
-  const len = village.length;
-  const availableCoords = [];
-  let min = Infinity;
-
-  for (let i = 0; i < len; i++) {
-    for (let j = 0; j < len; j++) {
-      if (matrix[i][j] === "2") {
-        matrix[i][j] = "X";
-        availableCoords.push([i, j, 0]);
-      }
+    for ( let i = currentIndex; i < sideDishes.length; i++ ) {
+      selected.add( sideDishes[i] );    
+      dfs( selected, depthCurrent + 1, depthRequired, i+1 );
+      selected.delete( sideDishes[i]);
     }
   }
 
-  function dfs(L, s, queue) {
-    if(L === num) {
-      const result = bfs([...queue], createMatrix(village));
-      if(min > result) min = result;
-      return ;
-    }
-    for(let i = s; i < availableCoords.length; i++) {
-      queue.push(availableCoords[i]);
-      dfs(L + 1, i + 1, queue);
-      queue.pop();
-    }
-  }
-  dfs(0, 0, []);
-
-  return min;
-};
-
-function bfs(queue, matrix) {
-
-  const isNotEmpty = ( ) => {
-    for( let i = 0; i < matrix.length; i++) {
-      for( let j = 0; j < matrix[i].length; j++) {
-        if( matrix[i][j] === '1' ) return true;
-      }
-    }
-    return false;
-  }
-
-  const dy = [-1, 0, 1, 0];
-  const dx = [0, 1, 0, -1];
-  const len = matrix.length;
-  let result;
-  let index = 0;
-
-  while (index < queue.length) {
-    const [y, x, minutes] = queue[index++];
-    matrix[y][x] = "*";
-
-    result = minutes;
-    for (let k = 0; k < 4; k++) {
-      const ny = y + dy[k];
-      const nx = x + dx[k];
-      if (
-        nx >= 0 &&
-        ny >= 0 &&
-        nx < len &&
-        ny < len &&
-        ( matrix[ny][nx] === "1" || matrix[ny][nx] === "2" )
-      ) {
-        matrix[ny][nx] = "*";
-        queue.push([ny, nx, minutes + 1]);
-      }
-    }
+  for( let i = 1 ; i <= sideDishes.length; i++ ) {
+    dfs( new Set(), 0, i, 0 );
   }
   
-  return isNotEmpty()? Infinity:result;
+  result.sort( (a, b) => {
+    for( let i = 0 ; i < a.length; i++ ) {
+
+      if( !a[i] && b[i] ) return -1;
+      if( !b[i] && a[i] ) return 1;
+
+      if ( a[i] < b[i] ) return -1;
+      if ( a[i] > b[i] ) return 1;
+
+    }
+  });
+  result.unshift([]);
+  return result;
 }
 
 
-const village = [
-  '01102021',
-  '00101001',
-  '00111101',
-  '20000121',
-  '11000010',
-  '00000100',
-  '20200120',
-  '00000111',
-];
-const num = 3;
-output = gossipProtocol2(village, num);
-console.log(output); // --> 3
+// let output = missHouseMeal(['pasta', 'oysterSoup', 'beefRibs', 'tteokbokki'])
+let output = missHouseMeal(["eggroll", "kimchi", "fishSoup"]);
+console.log(output);

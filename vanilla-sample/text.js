@@ -1,3 +1,138 @@
+function missHouseMeal(sideDishes) {
+  // TODO: 여기에 코드를 작성합니다.
+  const result = [];
+
+  const dfs = (selected, depthCurrent, depthRequired, currentIndex) => {
+    if ( depthCurrent === depthRequired ) {
+      //sort the array in lexical order 
+      const selectedCopy = [...selected];
+      selectedCopy.sort();
+      return result.push( [...selectedCopy] );
+    }
+
+    for ( let i = currentIndex; i < sideDishes.length; i++ ) {
+      selected.add( sideDishes[i] );    
+      dfs( selected, depthCurrent + 1, depthRequired, i+1 );
+      selected.delete( sideDishes[i]);
+    }
+  }
+
+  for( let i = 1 ; i <= sideDishes.length; i++ ) {
+    dfs( new Set(), 0, i, 0 );
+  }
+  
+  result.sort( (a, b) => {
+    for( let i = 0 ; i < a.length; i++ ) {
+
+      if( !a[i] && b[i] ) return -1;
+      if( !b[i] && a[i] ) return 1;
+
+      if ( a[i] < b[i] ) return -1;
+      if ( a[i] > b[i] ) return 1;
+
+    }
+  });
+  result.unshift([]);
+  return result;
+}
+
+
+function HA3_test3(board, operation) {
+  // TODO: 여기에 코드를 작성하세요.
+  let score = 0;
+  const X = 0;
+  const Y = 1;
+  const currentCoord = [0,0];
+  const operationArr = Array.from(operation);
+  
+  const move = ( destX, destY ) => {
+    if( destX < 0 || destX >= board.length || destY < 0 || destY >= board[0].length ) return ;
+    currentCoord[X] = destX;
+    currentCoord[Y] = destY;
+    score += board[destX][destY];
+    board[destX][destY] = 0;
+  }
+
+  while( operationArr?.length ) {
+    let [destX, destY] =  currentCoord;
+    switch( operationArr.shift() ) {
+      case 'U': 
+        destX--; 
+        break;
+      case 'D':
+        destX++;
+        break;
+      case 'L':
+        destY--;
+        break;
+      case 'R':
+        destY++;
+        break;
+    }
+    move( destX, destY ); 
+  }
+
+  return score;
+};
+
+const board2 = [
+  [567, 6734, 132],
+  [789, 243, 6],
+  [89, 33333, 0]
+]
+const output2 = test3(board2, 'UUUDD');
+console.log(output2); // 878
+
+
+function HA3_test2 (n, m) {
+  // TODO: 여기에 코드를 작성하세요.
+  const arrayNumber = Array.from({length: n}, (_, index) => ++index );
+  const len = arrayNumber.length;
+  const chosen = new Array(m).fill(null);
+  const check = new Array(len).fill(false);
+  const result = [];
+
+  const chooseNumber = ( idx ) => {
+    if( idx === m ) return result.push( Number([...chosen].join('')) );
+    else {
+      for (let i = 0; i < len ; i++) {
+        if ( !check[i] ) {
+          check[i] = !check[i];
+          chosen[ idx ] = arrayNumber[i];
+          chooseNumber( idx + 1 );
+          check[i] = !check[i];
+        }
+      }
+    }
+  };
+  chooseNumber(0);
+  return result;
+};
+
+
+
+
+function HA3_test1(A, B) {
+  // TODO: 여기에 코드를 작성하세요.
+
+  const checkDivisior = (A, B) => {
+    let divisor = 0;
+    for(let i = 1; i <= A; i++){
+      if(A % i === 0 && B % i === 0){
+        divisor = i;
+      }
+    }
+    return divisor;
+  };
+
+  return checkDivisior(A, B);
+}
+
+
+// 가로 20, 세로 8이 주어졌을 때, 최대 4의 길이를 가진 정사각형 타일을 가질 수 있습니다.
+const output1 = test1(20, 8);
+console.log(output1); // --> 4
+
 const countIslands = function (grid) {
   // TODO: 여기에 코드를 작성합니다.
   const MAX_ROW = grid.length;
