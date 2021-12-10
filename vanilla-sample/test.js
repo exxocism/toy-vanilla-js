@@ -1,3 +1,24 @@
+const subsetSum = function (set, bound) {
+  // 코드를 입력하세요.
+  let biggest = -Infinity;
+  const dfs = (sum, index) => {
+    if (sum > bound) return ;
+    biggest = biggest < sum? sum : biggest;
+    if (index === set.length) return ;
+    for( let i = index; i < set.length; i++) {
+      dfs(sum + set[i], i + 1);
+    }
+  }
+
+  set.sort( (a, b) => a - b );
+  for( let i = 0; i < set.length; i++) {
+    if( set[i] > bound ) set = set.slice(0, i);
+  }
+  
+  dfs(0, 0);
+  return biggest === -Infinity ? 0 : biggest;
+};
+
 function test3(N, M) {
 
   let result = [];
