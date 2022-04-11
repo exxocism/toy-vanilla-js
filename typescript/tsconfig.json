@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "./build/",
+    "noImplicitAny": true,
+    //commonjs = require, es6 = import statement
+    "module": "es6",
+    //Note that es5 doesn't support class declations
+    "target": "es6",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true
+    // "types": ["@types/node"]
+    //only if you want type safety with the backend
+    // "paths": { "@backend/*": ["../server/*"] }
+  }
+}
